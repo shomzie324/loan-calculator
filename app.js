@@ -1,8 +1,18 @@
 // listen for submit
 
-document.getElementById('loan-form').addEventListener('submit', calculateResults);
+document.getElementById('loan-form').addEventListener('submit', function (e) {
+    //hide results
+    document.getElementById("results").style.display = "none";
 
-function calculateResults(e) {
+    // show loader
+    document.getElementById("loading").style.display = "block";
+
+    setTimeout(calculateResults, 2000)
+
+    e.preventDefault();
+});
+
+function calculateResults() {
     console.log("Calculating...");
 
     //get form ui vars
@@ -25,17 +35,28 @@ function calculateResults(e) {
     if (isFinite(calculatedMonthlyPayments)) {
         monthly_payment.value = calculatedMonthlyPayments.toFixed(2);
         total_payment.value = (calculatedMonthlyPayments * calculatedPayments).toFixed(2);
+
+        // show results when calculation is complete
+        document.getElementById("results").style.display = "block";
+
+        // hide loader
+        document.getElementById("loading").style.display = "none";
+
         showSuccess("Interest Calculated ! See below results.");
     } else {
         // build alert with create element functions
         showError("Please check inputs as an error may have occurred");
     }
 
-    e.preventDefault();
-
 }
 
 function showError(err) {
+    // hide results
+    document.getElementById("results").style.display = "none";
+
+    // hide loader
+    document.getElementById("loading").style.display = "none";
+
     // get elements to insert message
     const card = document.querySelector('.card');
     const heading = document.querySelector('.heading');
